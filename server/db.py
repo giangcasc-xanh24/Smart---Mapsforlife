@@ -10,7 +10,8 @@ import threading
 import time
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-DATA_DIR = os.environ.get("XANH24_DATA_DIR", os.path.join(BASE_DIR, "data"))
+DEFAULT_DATA_DIR = "/tmp/xanh24" if os.environ.get("VERCEL") else os.path.join(BASE_DIR, "data")
+DATA_DIR = os.environ.get("XANH24_DATA_DIR", DEFAULT_DATA_DIR)
 DB_PATH = os.environ.get("XANH24_DB", os.path.join(DATA_DIR, "xanh24.db"))
 UPLOAD_DIR = os.path.join(DATA_DIR, "uploads")
 

@@ -32,7 +32,8 @@ from seed import seed_all  # noqa: E402
 
 VERSION = "1.0.0"
 WEB_DIR = os.path.join(BASE_DIR, "web")
-MAX_UPLOAD_MB = int(os.environ.get("XANH24_MAX_UPLOAD_MB", "200"))
+DEFAULT_MAX_UPLOAD_MB = "4" if os.environ.get("VERCEL") else "200"
+MAX_UPLOAD_MB = int(os.environ.get("XANH24_MAX_UPLOAD_MB", DEFAULT_MAX_UPLOAD_MB))
 
 app = Flask(__name__, static_folder=None)
 app.config["MAX_CONTENT_LENGTH"] = MAX_UPLOAD_MB * 1024 * 1024
