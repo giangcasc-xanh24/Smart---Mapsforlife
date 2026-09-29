@@ -5,10 +5,17 @@
       "includeFiles": "{server/**,web/**}"
     }
   },
-  "rewrites": [
+  "routes": [
     {
-      "source": "/(.*)",
-      "destination": "/api/index.py/$1"
+      "src": "/(.*)",
+      "dest": "/api/index.py",
+      "transforms": [
+        {
+          "type": "request.path",
+          "op": "set",
+          "args": "/$1"
+        }
+      ]
     }
   ]
 }
