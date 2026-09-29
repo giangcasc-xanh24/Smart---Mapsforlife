@@ -1,18 +1,14 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
   "functions": {
-    "index.py": {
+    "api/index.py": {
       "includeFiles": "{server/**,web/**}"
     }
   },
   "rewrites": [
     {
-      "source": "/api/:path*",
-      "destination": "/index.py/api/:path*"
-    },
-    {
-      "source": "/uploads/:path*",
-      "destination": "/index.py/uploads/:path*"
+      "source": "/(.*)",
+      "destination": "/api/index.py/$1"
     }
   ]
 }
