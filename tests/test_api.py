@@ -113,5 +113,16 @@ check(c.put("/api/admin/wards/hoan-kiem", headers=H1, json={"geometry": {"type":
 k = c.post("/api/admin/apikeys", headers=H0, json={"name": "test"}).json["key"]
 check(c.get("/api/admin/pois", headers={"X-API-Key": k}).status_code == 200, "API key đọc được")
 check(c.post("/api/admin/pois", headers={"X-API-Key": k}, json={"data": poi}).status_code == 403, "API key không ghi được")
+# chọn điểm bất kỳ + phiên bản dữ liệu cho kiosk
+import geocode
+geocode.reverse = lambda settings, lat, lng, lang="vi": {"name": "", "address": "12 Phố Hàng Bài, Hà Nội", "road": "Phố Hàng Bài"}
+r = c.get("/api/public/reverse?lat=21.0288&lng=105.8525")
+check(r.status_code == 200 and r.json["ward_slug"] == "hoan-kiem" and r.json["address"], "tra điểm bất kỳ: phường + địa chỉ")
+check(c.get("/api/public/reverse?lat=abc").status_code == 400, "tra điểm: kiểm tra tham số")
+v1 = c.get("/api/public/version").json["data_version"]
+import time as _t; _t.sleep(1.1)
+c.put("/api/admin/settings", headers=H0, json={"idle_timeout": 45})
+check(c.get("/api/public/version").json["data_version"] > v1, "data_version tăng khi dữ liệu thay đổi (kiosk tự cập nhật)")
+check("data_version" in c.get("/api/public/bootstrap").json, "bootstrap có data_version")
 print(f"\nTẤT CẢ {ok} KIỂM THỬ ĐẠT")
 shutil.rmtree(tmp)

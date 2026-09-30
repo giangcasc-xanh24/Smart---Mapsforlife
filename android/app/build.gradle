@@ -1,0 +1,45 @@
+// Mở thư mục android/ bằng Android Studio để build/sửa. Hoặc build không cần Gradle: ../build_apk.sh
+plugins { id "com.android.application" }
+
+def ksProps = new Properties()
+def ksFile = rootProject.file("keystore/keystore.properties")
+if (ksFile.exists()) ksFile.withInputStream { ksProps.load(it) }
+
+android {
+    namespace "com.xanh24.mapsforlife.kiosk"
+    compileSdk 34
+    defaultConfig {
+        applicationId "com.xanh24.mapsforlife.kiosk"
+        minSdk 23
+        targetSdk 33
+        versionCode 2
+        versionName "1.1.0"
+    }
+    sourceSets {
+        main {
+            manifest.srcFile "AndroidManifest.xml"
+            java.srcDirs = ["src"]
+            res.srcDirs = ["res"]
+        }
+    }
+    signingConfigs {
+        release {
+            if (ksFile.exists()) {
+                storeFile rootProject.file("keystore/" + ksProps["storeFile"])
+                storePassword ksProps["storePassword"]
+                keyAlias ksProps["keyAlias"]
+                keyPassword ksProps["keyPassword"]
+            }
+        }
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            signingConfig signingConfigs.release
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+}

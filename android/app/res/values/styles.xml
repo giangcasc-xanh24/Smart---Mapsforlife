@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="KioskTheme" parent="@android:style/Theme.Material.Light.NoActionBar.Fullscreen">
+        <item name="android:windowBackground">@color/splash</item>
+        <item name="android:colorPrimary">#14346F</item>
+        <item name="android:colorPrimaryDark">#0B1B3F</item>
+        <item name="android:colorAccent">#0FA968</item>
+        <item name="android:windowContentOverlay">@null</item>
+    </style>
+    <color name="splash">#0B1B3F</color>
+</resources>
